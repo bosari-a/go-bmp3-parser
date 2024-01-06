@@ -11,6 +11,38 @@ import (
 	"github.com/bosari-a/go-bmp3-parser/bmp3"
 )
 
+// 24 bit BMP header structure
+var HEADERBYTES = [bmp3.HEADERLENGTH]int64{2, 4, 4, 4}
+var HEADERPROPS = [bmp3.HEADERLENGTH]string{"signature", "fileSize", "reserved", "dataOffset"}
+
+// 24 bit BMP info header structure
+var INFOHEADERBYTES = [bmp3.INFOHEADERLENGTH]int64{
+	4,
+	4,
+	4,
+	2,
+	2,
+	4,
+	4,
+	4,
+	4,
+	4,
+	4,
+}
+var INFOHEADERPROPS = [bmp3.INFOHEADERLENGTH]string{
+	"size",
+	"width",
+	"height",
+	"planes",
+	"bitsPerPixel",
+	"compression",
+	"imageSize",
+	"xpixelsPerM",
+	"ypixelsPerM",
+	"colorsUsed",
+	"importantColors",
+}
+
 // RGB colors according to the specification
 // colors are stored backwards: BGR
 type RGB struct {
@@ -34,37 +66,13 @@ func Parse24bitData(file string, bh *bmp3.BITMAPHEADER, bi *bmp3.BITMAPINFOHEADE
 	}
 	// Parsing BITMAPHEADER
 	bh.HEADER = make(map[string]*[]byte)
-	bh.HEADERBYTES = [bmp3.HEADERLENGTH]int64{2, 4, 4, 4}
+	bh.HEADERBYTES = HEADERBYTES
 	bh.HEADERPROPS = [bmp3.HEADERLENGTH]string{"signature", "fileSize", "reserved", "dataOffset"}
 	bh.ParseHeader(fd)
 
 	// Parsing BITMAPINFOHEADER
-	bi.INFOHEADERBYTES = [bmp3.INFOHEADERLENGTH]int64{
-		4,
-		4,
-		4,
-		2,
-		2,
-		4,
-		4,
-		4,
-		4,
-		4,
-		4,
-	}
-	bi.INFOHEADERPROPS = [bmp3.INFOHEADERLENGTH]string{
-		"size",
-		"width",
-		"height",
-		"planes",
-		"bitsPerPixel",
-		"compression",
-		"imageSize",
-		"xpixelsPerM",
-		"ypixelsPerM",
-		"colorsUsed",
-		"importantColors",
-	}
+	bi.INFOHEADERBYTES = INFOHEADERBYTES
+	bi.INFOHEADERPROPS = INFOHEADERPROPS
 	bi.INFOHEADER = make(map[string]*[]byte)
 	bi.ParseInfoHeader(fd)
 
