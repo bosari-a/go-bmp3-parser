@@ -1,31 +1,41 @@
 package bmp3
 
-import "os"
+import (
+	"os"
+)
+
+// constants
+const HEADERLENGTH = 4
+const INFOHEADERLENGTH = 11
 
 type BITMAPHEADER struct {
 	HEADER      map[string]*[]byte
-	HEADERBYTES map[string]uint8
+	HEADERBYTES [4]int64
+	HEADERPROPS [4]string
 }
 
-func (bh *BITMAPHEADER) ParseHeader(fd *os.File, offset *int64) {
-	for k, v := range (*bh).HEADERBYTES {
+func (bh *BITMAPHEADER) ParseHeader(fd *os.File) {
+	for i := 0; i < HEADERLENGTH; i++ {
+		k := bh.HEADERPROPS[i]
+		v := bh.HEADERBYTES[i]
 		b := make([]byte, v)
-		fd.ReadAt(b, *offset)
+		fd.Read(b)
 		bh.HEADER[k] = &b
-		*offset += int64(v)
 	}
 }
 
 type BITMAPINFOHEADER struct {
 	INFOHEADER      map[string]*[]byte
-	INFOHEADERBYTES map[string]uint8
+	INFOHEADERBYTES [INFOHEADERLENGTH]int64
+	INFOHEADERPROPS [INFOHEADERLENGTH]string
 }
 
-func (bi *BITMAPINFOHEADER) ParseInfoHeader(fd *os.File, offset *int64) {
-	for k, v := range bi.INFOHEADERBYTES {
+func (bi *BITMAPINFOHEADER) ParseInfoHeader(fd *os.File) {
+	for i := 0; i < INFOHEADERLENGTH; i++ {
+		k := bi.INFOHEADERPROPS[i]
+		v := bi.INFOHEADERBYTES[i]
 		b := make([]byte, v)
-		fd.ReadAt(b, *offset)
+		fd.Read(b)
 		bi.INFOHEADER[k] = &b
-		*offset += int64(v)
 	}
 }
