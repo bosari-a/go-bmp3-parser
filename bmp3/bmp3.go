@@ -1,26 +1,31 @@
 package bmp3
 
-type BITMAPHEADER = map[string]*[]byte
+import "os"
 
-var HEADERBYTES = map[string]uint8{
-	"signature":  2,
-	"fileSize":   4,
-	"reserved":   4,
-	"dataOffset": 4,
+type BITMAPHEADER struct {
+	HEADER      map[string]*[]byte
+	HEADERBYTES map[string]uint8
 }
 
-type BITMAPINFOHEADER = map[string]*[]byte
+func (bh *BITMAPHEADER) ParseHeader(fd *os.File, offset *int64) {
+	for k, v := range (*bh).HEADERBYTES {
+		b := make([]byte, v)
+		fd.ReadAt(b, *offset)
+		bh.HEADER[k] = &b
+		*offset += int64(v)
+	}
+}
 
-var INFOHEADERBYTES = map[string]uint8{
-	"size":            4,
-	"width":           4,
-	"height":          4,
-	"planes":          2,
-	"bitsPerPixel":    2,
-	"compression":     4,
-	"imageSize":       4,
-	"xpixelsPerM":     4,
-	"ypixelsPerM":     4,
-	"colorsUsed":      4,
-	"importantColors": 4,
+type BITMAPINFOHEADER struct {
+	INFOHEADER      map[string]*[]byte
+	INFOHEADERBYTES map[string]uint8
+}
+
+func (bi *BITMAPINFOHEADER) ParseInfoHeader(fd *os.File, offset *int64) {
+	for k, v := range bi.INFOHEADERBYTES {
+		b := make([]byte, v)
+		fd.ReadAt(b, *offset)
+		bi.INFOHEADER[k] = &b
+		*offset += int64(v)
+	}
 }
