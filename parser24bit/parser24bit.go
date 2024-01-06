@@ -1,4 +1,4 @@
-package parse24bit
+package parser24bit
 
 import (
 	"bytes"
