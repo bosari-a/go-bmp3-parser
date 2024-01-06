@@ -104,6 +104,7 @@ func Parse24bitData(file string, bh *bmp3.BITMAPHEADER, bi *bmp3.BITMAPINFOHEADE
 		imageData[i] = &row
 		fd.Seek(int64(padding), io.SeekCurrent)
 	}
+	fd.Close()
 	return Result{
 		ImageData: &imageData,
 		Height:    h,
