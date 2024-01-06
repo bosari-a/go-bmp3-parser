@@ -1,22 +1,26 @@
 package bmp3
 
-type BITMAPHEADER struct {
-	Signature  [2]uint8
-	FileSize   uint32
-	Reserved   uint32
-	DataOffset uint32
+type BITMAPHEADER = map[string]*[]byte
+
+var HEADERBYTES = map[string]uint8{
+	"signature":  2,
+	"fileSize":   4,
+	"reserved":   4,
+	"dataOffset": 4,
 }
 
-type BITMAPINFOHEADER struct {
-	Size            uint32
-	Width           int32
-	Height          int32
-	Planes          int16
-	BitsPerPixel    uint16
-	Compression     uint32
-	ImageSize       uint32
-	XpixelsPerM     uint32
-	YpixelsPerM     uint32
-	ColorsUsed      uint32
-	ImportantColors uint32
+type BITMAPINFOHEADER = map[string]*[]byte
+
+var INFOHEADERBYTES = map[string]uint8{
+	"size":            4,
+	"width":           4,
+	"height":          4,
+	"planes":          2,
+	"bitsPerPixel":    2,
+	"compression":     4,
+	"imageSize":       4,
+	"xpixelsPerM":     4,
+	"ypixelsPerM":     4,
+	"colorsUsed":      4,
+	"importantColors": 4,
 }
