@@ -45,7 +45,7 @@ That ansi art project I mentioned is a good example to illustrate how this parse
 	}
 ```
 
-Ignoring the ansi aspect for a second, notice that you need to start looping in reverse height. That's because according to the `BMP` specification scan lines (rows of pixels) are stored bottom to top. My parser adheres to the specification in that regard.
+Ignoring the ansi aspect for a second, notice that in the outer loop you need to start looping in reverse height. That's because according to the `BMP` specification scan lines (rows of pixels) are stored bottom to top. My parser adheres to the specification in that regard.
 
 Another thing to keep in mind: you need to pass in `bh` and `bi` as parameters because I believe a proper parser should provide all data. This includes meta data which is available in those variables that you are required to initialize. They are mutated by the parser function as it reads data from the `BMP` file.
 
