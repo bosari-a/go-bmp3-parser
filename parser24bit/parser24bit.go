@@ -15,6 +15,9 @@ import (
 var HEADERBYTES = [bmp3.HEADERLENGTH]int64{2, 4, 4, 4}
 var HEADERPROPS = [bmp3.HEADERLENGTH]string{"signature", "fileSize", "reserved", "dataOffset"}
 
+// Below is not needed for parsing but useful for conversions
+var HEADERDEFAULTS = [bmp3.HEADERLENGTH]int64{19778, 0, 0, 54}
+
 // 24 bit BMP info header structure
 var INFOHEADERBYTES = [bmp3.INFOHEADERLENGTH]int64{
 	4,
@@ -41,6 +44,21 @@ var INFOHEADERPROPS = [bmp3.INFOHEADERLENGTH]string{
 	"ypixelsPerM",
 	"colorsUsed",
 	"importantColors",
+}
+
+// Below is not needed for parsing but useful for conversions
+var INFOHEADERDEFAULTS = [bmp3.INFOHEADERLENGTH]int64{
+	40,
+	0,
+	0,
+	1,
+	24,
+	0,
+	0,
+	0,
+	0,
+	256,
+	0,
 }
 
 // RGB colors according to the specification
