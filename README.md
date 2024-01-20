@@ -29,27 +29,6 @@ import (
 	imageData := *(res.ImageData)
 ```
 
-This code snippet is from one of my other projects that uses this parser to generate terminal ansi art: [github.com/bosari-a/image-to-ansi-go](github.com/bosari-a/image-to-ansi-go)
-
-That ansi art project I mentioned is a good example to illustrate how this parser work. The art generation is quite simple, the rest of the code looks like this:
-
-```go
-	for i := int(h) - 1; i > 0; i-- {
-		fmt.Print("\t")
-		for j := 0; j < int(w); j++ {
-			row := (*imageData[i])
-			pixel := row[j]
-			fmt.Printf("\x1b[38;2;%v;%v;%vm%%\x1b[0m", pixel.Red, pixel.Green, pixel.Blue)
-		}
-		fmt.Println("")
-	}
-```
-
-Ignoring the ansi aspect for a second, notice that in the outer loop you need to start looping in reverse height. That's because according to the `BMP` specification scan lines (rows of pixels) are stored bottom to top. My parser adheres to the specification in that regard.
-
-Another thing to keep in mind: you need to pass in `bh` and `bi` as parameters because I believe a proper parser should provide all data. This includes meta data which is available in those variables that you are required to initialize. They are mutated by the parser function as it reads data from the `BMP` file.
-
-
 ## Exports
 
 Image files usually have some metadata "offset" before the actual color/rgba/pixel values that represent what you see.
